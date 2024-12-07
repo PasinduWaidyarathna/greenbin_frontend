@@ -1,1 +1,0 @@
-# greenbin_frontend
