@@ -1,0 +1,36 @@
+Users
+
+UserID (Primary Key)
+Username
+Password
+Role (User, Admin, Collector)
+Contact Number
+Email
+
+
+Pickup_Locations
+
+LocationID (Primary Key)
+Address
+Latitude
+Longitude
+
+Requests
+
+RequestID (Primary Key)
+UserID (Foreign Key referencing Users table)
+LocationID (Foreign Key referencing Pickup_Locations table)
+RequestStatus (Pending, Approved, Completed, Cancelled)
+RequestedDateTime
+Amount
+PickupDateTime
+Quantity (of garbage)
+
+Payment
+
+PaymentID (Primary Key)
+RequestID (Foreign Key referencing Requests table)
+Amount
+PaymentMethod
+PaymentStatus (Pending, Paid, Refunded)
+PaymentDateTime
