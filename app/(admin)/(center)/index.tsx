@@ -1,4 +1,5 @@
 import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { FontAwesome } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
@@ -8,6 +9,8 @@ const HomeScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-green-100">
+      <StatusBar style="dark" />
+
       <View className="bg-green-400 p-4">
         <Text className="text-lg font-bold text-white">Welcome</Text>
         <Text className="text-xl font-bold text-white">Lakindu Banneheka</Text>

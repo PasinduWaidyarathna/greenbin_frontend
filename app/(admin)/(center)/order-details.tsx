@@ -1,9 +1,12 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { StatusBar } from "expo-status-bar";
 
 const OrderDetailsScreen = () => {
   return (
     <SafeAreaView className="flex-1 bg-green-100">
+      <StatusBar style="dark" />
+
       <View className="p-4">
         <Text className="text-lg font-bold mb-2">Order Details</Text>
         {[

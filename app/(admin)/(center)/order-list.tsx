@@ -1,3 +1,4 @@
+import { StatusBar } from "expo-status-bar";
 import { FontAwesome } from "@expo/vector-icons";
 import { ScrollView, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -5,6 +6,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const OrderListScreen = () => {
   return (
     <SafeAreaView className="flex-1 bg-green-100">
+      <StatusBar style="dark" />
+
       <ScrollView contentContainerStyle={{ paddingBottom: 20 }}>
         <View className="p-4">
           <Text className="text-lg font-bold mb-2">Order List</Text>
