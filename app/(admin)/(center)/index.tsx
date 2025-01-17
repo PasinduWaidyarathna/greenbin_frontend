@@ -1,11 +1,18 @@
 import { useRouter } from "expo-router";
+import { signOut } from "firebase/auth";
 import { StatusBar } from "expo-status-bar";
 import { FontAwesome } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Button } from "react-native";
+
+import { auth } from "@/config/firebase";
 
 const HomeScreen = () => {
   const router = useRouter();
+
+  const handleLogout = async () => {
+    await signOut(auth);
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-green-100">
@@ -27,6 +34,8 @@ const HomeScreen = () => {
             <FontAwesome name="shopping-bag" size={32} color="black" />
             <Text className="text-lg font-bold">Approve Orders</Text>
           </TouchableOpacity>
+
+          <Button title="Logout" onPress={handleLogout} />
         </View>
       </ScrollView>
     </SafeAreaView>
