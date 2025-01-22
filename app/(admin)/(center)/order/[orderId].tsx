@@ -16,7 +16,6 @@ import { db } from "@/config/firebase";
 const OrderDetailsScreen = () => {
   const { orderId } = useLocalSearchParams();
   const [order, setOrder] = useState<DocumentData | null>(null);
-  console.log(order);
 
   useEffect(() => {
     fetchOrder();
