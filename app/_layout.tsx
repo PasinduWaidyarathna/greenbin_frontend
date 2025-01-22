@@ -25,6 +25,20 @@ export default function RootLayout() {
             headerTitle: "Change Rates",
           }}
         />
+        <Stack.Screen
+          name="(admin)/(center)/order-list"
+          options={{
+            headerShown: true,
+            headerTitle: "Order List",
+          }}
+        />
+        <Stack.Screen
+          name="(admin)/(center)/order/[orderId]"
+          options={{
+            headerShown: true,
+            headerTitle: "Order Details",
+          }}
+        />
       </Stack>
     </AuthProvider>
   );

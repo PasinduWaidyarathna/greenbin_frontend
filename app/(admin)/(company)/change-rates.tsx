@@ -85,7 +85,7 @@ const ChangeRatesScreen = () => {
         {items.map((item) => (
           <View
             key={item.id}
-            className="flex-row items-center bg-gray-100 p-4 mb-2 rounded-lg"
+            className="flex-row items-center bg-white p-4 mb-2 rounded-lg"
           >
             <View className="flex-row items-center flex-1 gap-6">
               <Image source={imageMap[item.imagePath]} className="w-8 h-8" />
