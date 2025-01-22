@@ -17,8 +17,6 @@ const Page = () => {
 
   useEffect(() => {
     if (hasMounted) {
-      console.log(user, role);
-
       if (!user) {
         router.push("/sign-in");
       } else if (role === "USER") {

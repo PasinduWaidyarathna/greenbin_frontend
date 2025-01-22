@@ -1,10 +1,12 @@
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { Text, TouchableOpacity, View } from "react-native";
+import { doc, setDoc } from "firebase/firestore";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Map from "@/components/map";
+import { db } from "@/config/firebase";
 
 const AddPickupLocationScreen = () => {
   const [location, setLocation] = useState<Location.LocationObject | null>(
@@ -26,19 +28,24 @@ const AddPickupLocationScreen = () => {
     return <Text>Loading...</Text>;
   }
 
-  const handleAddPickupLocation = () => {
-    // Add pickup location to database
+  const handleAddPickupLocation = async () => {
+    try {
+      await setDoc(doc(db, "locations", `${location.timestamp}`), {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+
+      Alert.alert("Success", "Pickup location added successfully");
+    } catch (error) {
+      Alert.alert("Error", "Failed to add pickup location");
+    }
   };
 
   return (
     <SafeAreaView className="flex-1 bg-green-100">
       <StatusBar style="dark" />
 
-      <View className="p-4 h flex-1">
-        <Text className="text-lg font-bold mb-2">
-          Add a New Pickup Location
-        </Text>
-
+      <View className="p-4 flex-1">
         <Map location={location} />
 
         <TouchableOpacity
