@@ -15,7 +15,7 @@ import { UserNavigation } from '@/components/navigation/user-navigation';
 
 interface HomeScreenProps {
   userName: string;
-  onPickupLocations?: () => void;
+  // onPickupLocations?: () => void;
   // onRecycle?: () => void;
   onLearn?: () => void;
   onNews?: () => void;
@@ -25,7 +25,7 @@ interface HomeScreenProps {
 
 const HomeScreen: React.FC<HomeScreenProps> = ({
   // userName,
-  onPickupLocations,
+  // onPickupLocations,
   // onRecycle,
   onLearn,
   onNews,
@@ -73,7 +73,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({
 
         {/* Menu Grid */}
         <View style={styles.menuGrid}>
-          <TouchableOpacity style={styles.menuItem} onPress={onPickupLocations}>
+          <TouchableOpacity style={styles.menuItem} onPress={() => router.push("/(user)/show-pickup-location")}>
             <View style={styles.menuIconContainer}>
               <MaterialCommunityIcons name="map-marker-outline" size={35} color="#4CAF50" />
             </View>
