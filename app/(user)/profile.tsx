@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  TextInput, 
-  TouchableOpacity, 
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
   SafeAreaView,
   StatusBar,
-  Platform
+  Platform,
+  Button,
 } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
-import { UserNavigation } from "@/components/navigation/user-navigation";
+import { signOut } from "firebase/auth";
+import { MaterialIcons } from "@expo/vector-icons";
+
+import { auth } from "@/config/firebase";
 import { useAuth } from "@/context/auth-context";
 import { getUser, updateUser } from "@/services/userServices";
-import { auth } from "@/config/firebase";
-import { signOut } from "firebase/auth";
 import { useRouter } from "expo-router";
+import { UserNavigation } from "@/components/navigation/user-navigation";
+
 
 const ProfileScreen = () => {
-
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
@@ -28,8 +30,12 @@ const ProfileScreen = () => {
 
   const handleUpdate = () => {
     console.log({ email, username, contactNumber });
-    if(user){
-      updateUser(user.uid, { email, displayName: username, phoneNumber: contactNumber });
+    if (user) {
+      updateUser(user.uid, {
+        email,
+        displayName: username,
+        phoneNumber: contactNumber,
+      });
     }
   };
 
@@ -38,15 +44,16 @@ const ProfileScreen = () => {
     router.push("/sign-in");
   }
 
+
   useEffect(() => {
     const getUserData = async () => {
-      if(user){
+      if (user) {
         getUser(user.uid).then((userData) => {
           setEmail(userData?.email ?? "");
           setUsername(userData?.displayName ?? "");
           setContactNumber(userData?.phoneNumber ?? "");
-        }
-      )}
+        });
+      }
     };
     getUserData();
   }, [user]);
@@ -54,7 +61,7 @@ const ProfileScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#fff" barStyle="dark-content" />
-      
+
       <View style={styles.header}>
         <Text style={styles.headerText}>Profile</Text>
       </View>
@@ -106,16 +113,15 @@ const ProfileScreen = () => {
           <Text style={styles.updateButtonText}>Update</Text>
         </TouchableOpacity>
 
-        
+
         <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
           <Text style={styles.logoutBtnText}>LOGOUT</Text>
         </TouchableOpacity>
+
       </View>
 
       {/* Bottom Navigation */}
-      <UserNavigation 
-        currentScreen="profile"
-      />
+      <UserNavigation currentScreen="profile" />
     </SafeAreaView>
   );
 };
@@ -127,20 +133,21 @@ const styles = StyleSheet.create({
   },
   header: {
     paddingHorizontal: 20,
-    paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
-    height: Platform.OS === 'android' ? 56 + (StatusBar.currentHeight || 0) : 56,
-    justifyContent: 'center',
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    height:
+      Platform.OS === "android" ? 56 + (StatusBar.currentHeight || 0) : 56,
+    justifyContent: "center",
   },
   headerText: {
     fontSize: 20,
-    color: '#000',
+    color: "#000",
   },
   content: {
     flex: 1,
     paddingHorizontal: 20,
   },
   profileSection: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
     marginBottom: 40,
   },
@@ -148,58 +155,58 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
-    backgroundColor: '#f5f5f5',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#f5f5f5",
+    justifyContent: "center",
+    alignItems: "center",
   },
   editButton: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
-    right: '32%',
-    backgroundColor: '#4CAF50',
+    right: "32%",
+    backgroundColor: "#4CAF50",
     width: 36,
     height: 36,
     borderRadius: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   inputSection: {
     marginBottom: 30,
   },
   label: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
     marginBottom: 8,
   },
   input: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
     borderRadius: 8,
     padding: 15,
     fontSize: 16,
     marginBottom: 20,
-    color: '#000',
+    color: "#000",
   },
   updateButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#4CAF50",
     borderRadius: 8,
     padding: 15,
-    alignItems: 'center',
+    alignItems: "center",
   },
   updateButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   bottomNav: {
-    flexDirection: 'row',
+    flexDirection: "row",
     borderTopWidth: 1,
-    borderTopColor: '#eee',
+    borderTopColor: "#eee",
     paddingVertical: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   navItem: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 8,
   },
 
