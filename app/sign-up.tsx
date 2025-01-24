@@ -1,19 +1,28 @@
-import { useState } from "react";
-import { doc, setDoc } from "firebase/firestore";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { View, TextInput, Button, Text, StyleSheet, Alert } from "react-native";
+import { auth, db } from '@/config/firebase';
+import { useRouter } from 'expo-router';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import React, { useState } from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  SafeAreaView,
+  Alert,
+} from 'react-native';
 
-import { auth, db } from "@/config/firebase";
-import { useRouter } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar } from "expo-status-bar";
+interface SignUpScreenProps {
+  onSignUp: (email: string, username: string, password: string) => void;
+}
 
-const SignUp = () => {
+export default function SignUpScreen({ onSignUp }: SignUpScreenProps) {
+  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const router = useRouter();
-
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
 
   const handleSignUp = async () => {
     if (password !== confirmPassword) {
@@ -42,38 +51,119 @@ const SignUp = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-green-100">
-      <StatusBar style="dark" />
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
+        <View style={styles.logoContainer}>
+          <Text style={styles.logoText}>
+            <Text style={styles.greenText}>GREEN </Text>
+            <Text style={styles.blackText}>BIN</Text>
+          </Text>
+        </View>
 
-      <View>
-        <Text>Sign Up</Text>
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-        />
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-        <TextInput
-          placeholder="Confirm Password"
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-        />
-        <Button title="Sign Up" onPress={handleSignUp} />
-        <Text>
-          Already have an account?{" "}
-          <Text onPress={() => router.push("/sign-in")}>Sign In</Text>
-        </Text>
+        <View style={styles.form}>
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter the Email"
+            placeholderTextColor="#999"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+
+          <Text style={styles.label}>Username</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter the Username"
+            placeholderTextColor="#999"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="none"
+          />
+
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter the Password"
+            placeholderTextColor="#999"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+          />
+
+          <Text style={styles.label}>Confirm Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter the Confirm Password"
+            placeholderTextColor="#999"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry
+          />
+
+          <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
+            <Text style={styles.signUpButtonText}>Sign up</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
-};
+}
 
-export default SignUp;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 20,
+    justifyContent: 'center',
+  },
+  logoContainer: {
+    alignItems: 'center',
+    marginBottom: 40,
+  },
+  logoText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  greenText: {
+    color: '#4CAF50',
+  },
+  blackText: {
+    color: '#000',
+  },
+  form: {
+    width: '100%',
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: '#000',
+  },
+  input: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#E8F5E9',
+    borderRadius: 8,
+    paddingHorizontal: 16,
+    marginBottom: 16,
+    fontSize: 16,
+  },
+  signUpButton: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#000',
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  signUpButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+});

@@ -13,6 +13,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { UserNavigation } from "@/components/navigation/user-navigation";
 import { useAuth } from "@/context/auth-context";
 import { getUser, updateUser } from "@/services/userServices";
+import { auth } from "@/config/firebase";
+import { signOut } from "firebase/auth";
+import { useRouter } from "expo-router";
 
 const ProfileScreen = () => {
 
@@ -21,6 +24,7 @@ const ProfileScreen = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [contactNumber, setContactNumber] = useState("");
+  const router = useRouter();
 
   const handleUpdate = () => {
     console.log({ email, username, contactNumber });
@@ -28,6 +32,11 @@ const ProfileScreen = () => {
       updateUser(user.uid, { email, displayName: username, phoneNumber: contactNumber });
     }
   };
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push("/sign-in");
+  }
 
   useEffect(() => {
     const getUserData = async () => {
@@ -95,6 +104,11 @@ const ProfileScreen = () => {
 
         <TouchableOpacity style={styles.updateButton} onPress={handleUpdate}>
           <Text style={styles.updateButtonText}>Update</Text>
+        </TouchableOpacity>
+
+        
+        <TouchableOpacity style={styles.logoutBtn} onPress={handleLogout}>
+          <Text style={styles.logoutBtnText}>LOGOUT</Text>
         </TouchableOpacity>
       </View>
 
@@ -187,6 +201,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     paddingVertical: 8,
+  },
+
+  logoutBtn: {
+    // backgroundColor: '#b23b3b',
+    borderColor: '#b23b3b', 
+    borderWidth: 1,
+    borderRadius: 8,
+    padding: 15,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  logoutBtnText: {
+    color: '#b23b3b',
+    fontSize: 16,
+    fontWeight: '500',
   },
 });
 
