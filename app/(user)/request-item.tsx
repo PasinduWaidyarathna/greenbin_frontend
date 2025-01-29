@@ -20,6 +20,8 @@ import { CompanyType } from '../data/companyData';
 import { bankData, BankType } from '../data/bankData';
 import { requestService } from '@/services/requestService';
 import { useAuth } from '@/context/auth-context';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { db } from '@/config/firebase';
 
 // Get screen dimensions
 const { width } = Dimensions.get('window');
@@ -33,6 +35,7 @@ const RequestItem: React.FC<RequestItemProps> = () => {
   const router = useRouter();
   const params = useLocalSearchParams();
   const [locationID, setLocationID] = useState<string | null>(null);
+  const [PRICE_PER_KG, setPRICE_PER_KG] = useState(0.00);
   const { user } = useAuth();
 
   const [step, setStep] = useState(1);
@@ -46,7 +49,57 @@ const RequestItem: React.FC<RequestItemProps> = () => {
     type: params.name,
   });
 
-  const PRICE_PER_KG = 250.00;
+  // const PRICE_PER_KG = 250.00;
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Reference the collection
+        const itemsCollection = collection(db, "items");
+
+        let type = params?.name || "Glass";
+        console.log('Type:', type);
+
+        if(params?.name == "E Waste") {
+          type = "E-Waste"
+        }
+
+        if(params?.name == "Metal") {
+          type = "Metal"
+        }
+
+        // Create a query to filter by label
+        const q = query(itemsCollection, where("label", "==", type));
+  
+        // Execute the query
+        const querySnapshot = await getDocs(q);
+  
+        // Check if any documents match
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            // console.log("Document ID:", doc.id);
+            // console.log("Data:", doc.data());
+            // // Set the data as needed
+            console.log("Rate:", doc.data().rate);
+            const rate = typeof doc.data().rate === "number" 
+              ? doc.data().rate 
+              : Number(doc.data().rate);
+              
+            setPRICE_PER_KG(rate);
+          });
+          // setPRICE_PER_KG(125.00);
+        } else {
+          setPRICE_PER_KG(125.00);
+          console.log("No matching documents!");
+        }
+      } catch (error) {
+        console.error("Error fetching documents:", error);
+      }
+    };
+  
+    fetchData();
+  }, []);
 
   const handleQuantityChange = (increment: boolean) => {
     setQuantity(prev => increment ? prev + 1 : Math.max(1, prev - 1));
@@ -295,7 +348,7 @@ const RequestItem: React.FC<RequestItemProps> = () => {
           <View style={styles.itemDetails}>
             <View style={styles.priceRow}>
               <Text style={styles.labelText}>Sell Price</Text>
-              <Text style={styles.priceText}>1 kg - LKR {PRICE_PER_KG.toFixed(2)}</Text>
+              <Text style={styles.priceText}>1 kg - LKR {typeof PRICE_PER_KG === "number" ? PRICE_PER_KG.toFixed(2) : "0.00"}</Text>
             </View>
             
             <View style={styles.quantityRow}>

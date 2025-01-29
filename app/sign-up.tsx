@@ -17,7 +17,7 @@ interface SignUpScreenProps {
   onSignUp: (email: string, username: string, password: string) => void;
 }
 
-export default function SignUpScreen({ onSignUp }: SignUpScreenProps) {
+export default function SignUpScreen({  }: SignUpScreenProps) {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -55,7 +55,7 @@ export default function SignUpScreen({ onSignUp }: SignUpScreenProps) {
       <View style={styles.content}>
         <View style={styles.logoContainer}>
           <Text style={styles.logoText}>
-            <Text style={styles.greenText}>GREEN </Text>
+            <Text style={styles.greenText}>SMART </Text>
             <Text style={styles.blackText}>BIN</Text>
           </Text>
         </View>

@@ -20,9 +20,6 @@ export default function SignInScreen({ }: SignInScreenProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
-  // const handleSignIn = () => {
-  //   onSignIn(username, password);
-  // };
 
   const handleSignIn = async () => {
     try {
